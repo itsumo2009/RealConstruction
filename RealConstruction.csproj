@@ -110,13 +110,13 @@
   <PropertyGroup>
     <PostBuildEvent>rd /q /s "F:\SteamLibrary\steamapps\workshop\content\255710\1614061108"
 mkdir "F:\SteamLibrary\steamapps\workshop\content\255710\1614061108"
-copy "D:\Mod\RealConstruction\bin\Release\RealConstruction.dll"  "F:\SteamLibrary\steamapps\workshop\content\255710\1614061108\RealConstruction.dll"
-mkdir "F:\SteamLibrary\steamapps\workshop\content\255710\1614061108\Locales"
-copy "D:\Mod\RealConstruction\Locales\*.txt" "F:\SteamLibrary\steamapps\workshop\content\255710\1614061108\Locales"
-copy "D:\Mod\RealConstruction\bin\Release\CitiesHarmony.API.dll"  "F:\SteamLibrary\steamapps\workshop\content\255710\1614061108\CitiesHarmony.API.dll"
-mkdir "F:\SteamLibrary\steamapps\workshop\content\255710\1614061108\Icon"
-copy "D:\Mod\RealConstruction\Icon\*.png" "F:\SteamLibrary\steamapps\workshop\content\255710\1614061108\Icon"
-copy "D:\Mod\RealConstruction\PreviewImage.png"  "F:\SteamLibrary\steamapps\workshop\content\255710\1614061108\PreviewImage.png"</PostBuildEvent>
+copy "W:\skylines-mods\RealConstruction\bin\Release\RealConstruction.dll"  "C:\Users\singl\AppData\Local\Colossal Order\Cities_Skylines\Addons\Mods\RealConstruction\RealConstruction.dll"
+mkdir "C:\Users\singl\AppData\Local\Colossal Order\Cities_Skylines\Addons\Mods\RealConstruction\Locales"
+copy "W:\skylines-mods\RealConstruction\Locales\*.txt" "C:\Users\singl\AppData\Local\Colossal Order\Cities_Skylines\Addons\Mods\RealConstruction\Locales"
+copy "W:\skylines-mods\RealConstruction\bin\Release\CitiesHarmony.API.dll"  "C:\Users\singl\AppData\Local\Colossal Order\Cities_Skylines\Addons\Mods\RealConstruction\CitiesHarmony.API.dll"
+mkdir "C:\Users\singl\AppData\Local\Colossal Order\Cities_Skylines\Addons\Mods\RealConstruction\Icon"
+copy "W:\skylines-mods\RealConstruction\Icon\*.png" "C:\Users\singl\AppData\Local\Colossal Order\Cities_Skylines\Addons\Mods\RealConstruction\Icon"
+copy "W:\skylines-mods\RealConstruction\PreviewImage.png"  "C:\Users\singl\AppData\Local\Colossal Order\Cities_Skylines\Addons\Mods\RealConstruction\PreviewImage.png"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

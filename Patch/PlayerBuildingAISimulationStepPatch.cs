@@ -110,7 +110,7 @@ namespace RealConstruction.Patch
                 if (!buildingData.m_flags.IsFlagSet(Building.Flags.Completed))
                 {
                     ConstructionAI.ProcessBuildingConstruction(buildingID, ref buildingData, ref frameData);
-                    if (MainDataStore.constructionResourceBuffer[buildingID] >= 8000)
+                    if (MainDataStore.constructionResourceBuffer[buildingID] >= 10 * buildingData.Info.m_cellWidth * buildingData.Info.m_cellLength)
                     {
                         Notification.Problem problem = Notification.RemoveProblems(buildingData.m_problems, Notification.Problem.NoResources);
                         buildingData.m_problems = problem;

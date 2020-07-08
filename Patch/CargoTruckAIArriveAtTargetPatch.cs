@@ -1,6 +1,8 @@
 ﻿using ColossalFramework;
+using ColossalFramework.Globalization;
 using HarmonyLib;
 using RealConstruction.CustomAI;
+using RealConstruction.CustomManager;
 using RealConstruction.NewAI;
 using RealConstruction.Util;
 using System;
@@ -30,14 +32,29 @@ namespace RealConstruction.Patch
             if (vehicleData.m_targetBuilding != 0)
             {
                 Building buildingData = instance.m_buildings.m_buffer[vehicleData.m_targetBuilding];
+
+                
                 if (!(buildingData.Info.m_buildingAI is OutsideConnectionAI))
                 {
                     if (buildingData.m_flags.IsFlagSet(Building.Flags.Created) && (!buildingData.m_flags.IsFlagSet(Building.Flags.Completed)) && (!buildingData.m_flags.IsFlagSet(Building.Flags.Deleted)))
                     {
+                        Locale.Get("ZED", (int)buildingData.Info.m_mesh.bounds.size.z);
                         if (vehicleData.m_transferType == 124)
                         {
-                            vehicleData.m_transferSize = 0;
-                            MainDataStore.constructionResourceBuffer[vehicleData.m_targetBuilding] = 8000;
+                            ushort square = (ushort)(buildingData.Info.m_cellLength * buildingData.Info.m_cellWidth * 10);
+                            square -= MainDataStore.constructionResourceBuffer[vehicleData.m_targetBuilding];
+                            if (vehicleData.m_transferSize > square * 1000)
+                            {
+                                MainDataStore.constructionResourceBuffer[vehicleData.m_targetBuilding] += square;
+                                vehicleData.m_transferSize -= (ushort)(square * 1000);
+                            }
+                            else
+                            {
+                                MainDataStore.constructionResourceBuffer[vehicleData.m_targetBuilding] += (ushort)(vehicleData.m_transferSize * 100);
+                                vehicleData.m_transferSize = 0;
+                            }
+
+                            MainDataStore.vehicleFree[vehicleID] = true;
                         }
                     }
                     else

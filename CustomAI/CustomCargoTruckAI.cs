@@ -1,6 +1,8 @@
-﻿using RealConstruction.NewAI;
+﻿using ColossalFramework.Globalization;
+using RealConstruction.NewAI;
 using RealConstruction.Util;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
 namespace RealConstruction.CustomAI
 {
@@ -9,13 +11,16 @@ namespace RealConstruction.CustomAI
         public static void CargoTruckAISetSourceForRealConstruction(ushort vehicleID, ref Vehicle data, ushort sourceBuilding)
         {
             CargoTruckAI AI = data.Info.m_vehicleAI as CargoTruckAI;
-            int num = Mathf.Min(0, (int)data.m_transferSize - AI.m_cargoCapacity);
+            
             //new added begin
             if (ResourceBuildingAI.IsSpecialBuilding(sourceBuilding))
             {
                 if ((TransferManager.TransferReason)data.m_transferType == (TransferManager.TransferReason)124)
                 {
-                    MainDataStore.constructionResourceBuffer[sourceBuilding] -= 8000;
+                    if (MainDataStore.constructionResourceBuffer[sourceBuilding] < data.m_transferSize / 100)
+                        data.m_transferSize = (ushort) (MainDataStore.constructionResourceBuffer[sourceBuilding] * 100);
+                    
+                    MainDataStore.constructionResourceBuffer[sourceBuilding] -= (ushort)(data.m_transferSize / 100);
                 }
                 else if ((TransferManager.TransferReason)data.m_transferType == (TransferManager.TransferReason)125)
                 {

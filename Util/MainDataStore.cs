@@ -17,6 +17,7 @@ namespace RealConstruction.Util
         public static ushort[,] canNotConnectedBuildingID = new ushort[49152, 8];
         public static byte[] refreshCanNotConnectedBuildingIDCount = new byte[49152];
         public static byte[] canNotConnectedBuildingIDCount = new byte[49152];
+        public static bool[]  vehicleFree = new bool[65535];
 
         public static void DataInit()
         {
@@ -30,6 +31,9 @@ namespace RealConstruction.Util
                 operationResourceBuffer[i] = 0;
                 resourceCategory[i] = 0;
             }
+
+            for (int i = 0; i < MainDataStore.vehicleFree.Length; ++i)
+                vehicleFree[i] = false;
         }
 
         public static void Save(ref byte[] saveData)

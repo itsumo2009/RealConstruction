@@ -1,4 +1,5 @@
 ﻿using ColossalFramework;
+using ColossalFramework.Globalization;
 using ColossalFramework.Plugins;
 using RealConstruction.CustomAI;
 using RealConstruction.NewAI;
@@ -13,6 +14,17 @@ namespace RealConstruction.CustomManager
         public static bool _init = false;
         public static void StartSpecialBuildingTransfer(ushort buildingID, ref Building data, TransferManager.TransferReason material, TransferManager.TransferOffer offer)
         {
+            int n = Util.CaculationVehicle.FindFreeVehicle(buildingID, ref data, material, out int cargo, out int capacity);
+            if (n!= -1)
+            {
+                VehicleManager instance = Singleton<VehicleManager>.instance;
+                var v =  instance.m_vehicles.m_buffer[n];
+                var vi = instance.m_vehicles.m_buffer[n].Info;
+                vi.m_vehicleAI.StartTransfer((ushort)n, ref v, material, offer);
+                vi.m_vehicleAI.SetTarget((ushort)n, ref v, offer.Building);
+                return;
+            }
+
             VehicleInfo vehicleInfo = null;
             if (material == (TransferManager.TransferReason)124)
             {
@@ -30,17 +42,19 @@ namespace RealConstruction.CustomManager
                 if (Singleton<VehicleManager>.instance.CreateVehicle(out ushort vehicleID, ref Singleton<SimulationManager>.instance.m_randomizer, vehicleInfo, data.m_position, material, false, true))
                 {
                     vehicleInfo.m_vehicleAI.SetSource(vehicleID, ref vehicles.m_buffer[vehicleID], buildingID);
+                    MainDataStore.vehicleFree[vehicleID] = false;
                     if (vehicleInfo.m_vehicleAI is CargoTruckAI)
                     {
                         CargoTruckAI AI = vehicleInfo.m_vehicleAI as CargoTruckAI;
+                        vehicles.m_buffer[vehicleID].m_transferSize = (ushort)(offer.Amount * 1000);
                         CustomCargoTruckAI.CargoTruckAISetSourceForRealConstruction(vehicleID, ref vehicles.m_buffer[vehicleID], buildingID);
-                        vehicles.m_buffer[(int)vehicleID].m_transferSize = (ushort)AI.m_cargoCapacity;
                     }
                     else
                     {
                         DebugLog.LogToFileOnly("Error: vehicleInfo is not cargoTruckAI " + vehicleInfo.m_vehicleAI.ToString());
                     }
                     vehicleInfo.m_vehicleAI.StartTransfer(vehicleID, ref vehicles.m_buffer[vehicleID], material, offer);
+                    
                     ushort building4 = offer.Building;
                     if (building4 != 0)
                     {

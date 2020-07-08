@@ -1,4 +1,5 @@
 ﻿using ColossalFramework;
+using ColossalFramework.Globalization;
 using RealConstruction.Util;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,21 @@ namespace RealConstruction.NewAI
     {
         public static void ProcessBuildingConstruction(ushort buildingID, ref Building buildingData, ref Building.Frame frameData)
         {
-            if (MainDataStore.constructionResourceBuffer[buildingID] < 8000 && (!ResourceBuildingAI.IsSpecialBuilding(buildingID)))
+            var ml = buildingData.Info.m_cellLength;
+            var mw = buildingData.Info.m_cellWidth;
+
+            int square = mw * ml;
+
+            int total_resources_need = 10 * square;
+
+            int current_resources = MainDataStore.constructionResourceBuffer[buildingID];
+            if (current_resources < total_resources_need && (!ResourceBuildingAI.IsSpecialBuilding(buildingID)))
             {
                 System.Random rand = new System.Random();
                 if (buildingData.m_flags.IsFlagSet(Building.Flags.Created) && (!buildingData.m_flags.IsFlagSet(Building.Flags.Completed)) && (!buildingData.m_flags.IsFlagSet(Building.Flags.Deleted)))
                 {
-                    frameData.m_constructState = 10;
+                    byte x = (byte)(current_resources * 255 / total_resources_need) ;
+                    frameData.m_constructState = Math.Min(x, frameData.m_constructState);
                     int num27 = 0;
                     int num28 = 0;
                     int num29 = 0;
@@ -37,7 +47,7 @@ namespace RealConstruction.NewAI
                         buildingData.m_tempImport = (byte)Mathf.Clamp(value, (int)buildingData.m_tempImport, 255);
                     }
 
-                    num34 = 8000 - MainDataStore.constructionResourceBuffer[buildingID] - num29;
+                    num34 = total_resources_need - current_resources - num29;
                     if (num34 > 0)
                     {
                         TransferManager.TransferOffer offer = default(TransferManager.TransferOffer);

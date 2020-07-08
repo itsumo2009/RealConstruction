@@ -39,7 +39,7 @@ namespace RealConstruction.NewAI
                     {
                         MainDataStore.lumberBuffer[buildingID] -= (ushort)materialConsumption;
                         MainDataStore.coalBuffer[buildingID] -= (ushort)materialConsumption;
-                        MainDataStore.constructionResourceBuffer[buildingID] += 800;
+                        ++MainDataStore.constructionResourceBuffer[buildingID];
                     }
                 }
 
@@ -49,7 +49,7 @@ namespace RealConstruction.NewAI
                     {
                         MainDataStore.petrolBuffer[buildingID] -= (ushort)materialConsumption;
                         MainDataStore.foodBuffer[buildingID] -= (ushort)materialConsumption;
-                        MainDataStore.operationResourceBuffer[buildingID] += 800;
+                        ++MainDataStore.operationResourceBuffer[buildingID];
                     }
                 }
             }
@@ -76,13 +76,13 @@ namespace RealConstruction.NewAI
             {
                 int num36 = 20;
                 int customBuffer = MainDataStore.constructionResourceBuffer[buildingID];
-                if (customBuffer >= 8000 && num27 < num36)
+                if (customBuffer >= 10 && num27 < num36)
                 {
                     TransferManager.TransferOffer offer2 = default(TransferManager.TransferOffer);
                     offer2.Priority = rand.Next(8);
                     offer2.Building = buildingID;
                     offer2.Position = buildingData.m_position;
-                    offer2.Amount = Mathf.Min(customBuffer / 8000, num36 - num27);
+                    offer2.Amount = Mathf.Min(customBuffer / 10, num36 - num27);
                     offer2.Active = true;
                     Singleton<TransferManager>.instance.AddOutgoingOffer(outgoingTransferReason, offer2);
                 }

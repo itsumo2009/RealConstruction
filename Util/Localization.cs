@@ -40,6 +40,7 @@ namespace RealConstruction.Util
         public static string Get(string id)
         {
             var lang = LocaleManager.instance.language ?? "en";
+            
             if (!localeStore.ContainsKey(lang))
             {
                 localeStore.Add(lang, LocaleFromFile(LocalePath(File.Exists(LocalePath(lang)) ? lang : "en")));
