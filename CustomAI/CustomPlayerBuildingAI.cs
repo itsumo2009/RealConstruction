@@ -42,21 +42,6 @@ namespace RealConstruction.CustomAI
                 return false;
             }
 
-            if (ResourceBuildingAI.IsSpecialBuilding(buildingID))
-            {
-                return false;
-            }
-
-            if (buildingData.Info.m_buildingAI is ParkBuildingAI)
-            {
-                return false;
-            }
-
-            if (buildingData.Info.m_buildingAI is CampusBuildingAI)
-            {
-                return false;
-            }
-
             PlayerBuildingAI AI = buildingData.Info.m_buildingAI as PlayerBuildingAI;
             return AI.RequireRoadAccess();
         }

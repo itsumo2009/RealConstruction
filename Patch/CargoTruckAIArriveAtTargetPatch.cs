@@ -39,7 +39,7 @@ namespace RealConstruction.Patch
                     if (buildingData.m_flags.IsFlagSet(Building.Flags.Created) && (!buildingData.m_flags.IsFlagSet(Building.Flags.Completed)) && (!buildingData.m_flags.IsFlagSet(Building.Flags.Deleted)))
                     {
                         Locale.Get("ZED", (int)buildingData.Info.m_mesh.bounds.size.z);
-                        if (vehicleData.m_transferType == 124)
+                        if (vehicleData.m_transferType == 124 || (TransferManager.TransferReason)(vehicleData.m_transferType) == TransferManager.TransferReason.Goods)
                         {
                             ushort square = (ushort)(buildingData.Info.m_cellLength * buildingData.Info.m_cellWidth * 10);
                             square -= MainDataStore.constructionResourceBuffer[vehicleData.m_targetBuilding];
@@ -63,6 +63,14 @@ namespace RealConstruction.Patch
                         {
                             switch ((TransferManager.TransferReason)vehicleData.m_transferType)
                             {
+                                case TransferManager.TransferReason.Goods:
+                                    if (MainDataStore.constructionResourceBuffer[vehicleData.m_targetBuilding] + vehicleData.m_transferSize < 64000)
+                                        MainDataStore.constructionResourceBuffer[vehicleData.m_targetBuilding] += vehicleData.m_transferSize;
+                                    else
+                                        MainDataStore.constructionResourceBuffer[vehicleData.m_targetBuilding] = 64000;
+
+                                    vehicleData.m_transferSize = 0;
+                                    break;
                                 case TransferManager.TransferReason.Food:
                                     if (MainDataStore.foodBuffer[vehicleData.m_targetBuilding] < 57000)
                                     {

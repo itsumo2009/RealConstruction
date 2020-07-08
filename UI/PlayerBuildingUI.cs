@@ -96,7 +96,12 @@ namespace RealConstruction.UI
             buildingType.autoSize = true;
 
             buildingTypeDD = UIUtil.CreateDropDown(this);
-            buildingTypeDD.items = new string[] { Localization.Get("NORMAL_BUILDING"), Localization.Get("GENERATE_BOTH_RESOURCES"), Localization.Get("GENERATE_CONSTRUCTION_RESOURCES"), Localization.Get("GENERATE_OPERATION_RESOURCES"), Localization.Get("NONEED_RESOURCE") };
+            buildingTypeDD.items = new string[] { 
+                Localization.Get("NORMAL_BUILDING"),
+                Localization.Get("GENERATE_BOTH_RESOURCES"),
+                Localization.Get("GENERATE_CONSTRUCTION_RESOURCES"),
+                Localization.Get("GENERATE_OPERATION_RESOURCES"),
+                Localization.Get("NONEED_RESOURCE") };
             buildingTypeDD.selectedIndex = MainDataStore.resourceCategory[MainDataStore.lastBuildingID];
             buildingTypeDD.size = new Vector2(250f, 25f);
             buildingTypeDD.relativePosition = new Vector3(15f, buildingType.relativePosition.y + 20f);
