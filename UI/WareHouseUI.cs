@@ -124,7 +124,7 @@ namespace RealConstruction.UI
                         this.coal.text = string.Format(Localization.Get("COAL_STORED") + " [{0}]", MainDataStore.coalBuffer[MainDataStore.lastBuildingID]);
                         this.petrol.text = string.Format(Localization.Get("PETROL_STORED") + " [{0}]", MainDataStore.petrolBuffer[MainDataStore.lastBuildingID]);
                         this.operationResource.text = string.Format(Localization.Get("OPERATION_RESOURCE") + " [{0}]", MainDataStore.operationResourceBuffer[MainDataStore.lastBuildingID]);
-                        this.constructionResource.text = string.Format(Localization.Get("CONSTRUCTION_RESOURCE") + " [{0}]", MainDataStore.constructionResourceBuffer[MainDataStore.lastBuildingID]);
+                        this.constructionResource.text = string.Format(Localization.Get("CONSTRUCTION_RESOURCE") + " [{0}]", MainDataStore.Current(MainDataStore.lastBuildingID, true));
                     }
                     else
                     {

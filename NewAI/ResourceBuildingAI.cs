@@ -33,13 +33,14 @@ namespace RealConstruction.NewAI
             int materialConsumption = 40 / reduceCargoDiv;
             if (buildingData.m_fireIntensity == 0 && buildingData.m_flags.IsFlagSet(Building.Flags.Completed))
             {
-                if (MainDataStore.lumberBuffer[buildingID] > materialConsumption && MainDataStore.coalBuffer[buildingID] > materialConsumption && MainDataStore.constructionResourceBuffer[buildingID] < 64000)
+                if (MainDataStore.lumberBuffer[buildingID] > materialConsumption && MainDataStore.coalBuffer[buildingID] > materialConsumption)
                 {
                     if (MainDataStore.resourceCategory[buildingID] == 1 || MainDataStore.resourceCategory[buildingID] == 2)
                     {
                         MainDataStore.lumberBuffer[buildingID] -= (ushort)materialConsumption;
                         MainDataStore.coalBuffer[buildingID] -= (ushort)materialConsumption;
-                        ++MainDataStore.constructionResourceBuffer[buildingID];
+                        MainDataStore.Increment(buildingID, 800);
+                        MainDataStore.constructionResourcesTotal += 800;
                     }
                 }
 
@@ -75,14 +76,14 @@ namespace RealConstruction.NewAI
             if (buildingData.m_fireIntensity == 0 && outgoingTransferReason != TransferManager.TransferReason.None && buildingData.m_flags.IsFlagSet(Building.Flags.Completed))
             {
                 int num36 = 20;
-                int customBuffer = MainDataStore.constructionResourceBuffer[buildingID];
+                int customBuffer = MainDataStore.Current(buildingID);
                 if (customBuffer >= 10 && num27 < num36)
                 {
                     TransferManager.TransferOffer offer2 = default(TransferManager.TransferOffer);
                     offer2.Priority = rand.Next(8);
                     offer2.Building = buildingID;
                     offer2.Position = buildingData.m_position;
-                    offer2.Amount = Mathf.Min(customBuffer / 10, num36 - num27);
+                    offer2.Amount = customBuffer;
                     offer2.Active = true;
                     Singleton<TransferManager>.instance.AddOutgoingOffer(outgoingTransferReason, offer2);
                 }
@@ -127,7 +128,7 @@ namespace RealConstruction.NewAI
                 incomingTransferReason = TransferManager.TransferReason.Goods;
                 CaculationVehicle.CustomCalculateGuestVehicles(buildingID, ref buildingData, incomingTransferReason, ref num27, ref num28, ref num29, ref value);
                 buildingData.m_tempImport = (byte)Mathf.Clamp(value, (int)buildingData.m_tempImport, 255);
-                if (MainDataStore.constructionResourceBuffer[buildingID] + num34 + num29 < 32000)
+                if (MainDataStore.Current(buildingID, true) + num34 + num29 < 32000)
                 {
                     if (buildingData.m_fireIntensity == 0 && buildingData.m_flags.IsFlagSet(Building.Flags.Completed))
                     {
@@ -135,7 +136,7 @@ namespace RealConstruction.NewAI
                         offer.Priority = 7;
                         offer.Building = buildingID;
                         offer.Position = buildingData.m_position;
-                        offer.Amount = 4;
+                        offer.Amount = 1;
                         offer.Active = false;
                         Singleton<TransferManager>.instance.AddIncomingOffer(incomingTransferReason, offer);
                     }

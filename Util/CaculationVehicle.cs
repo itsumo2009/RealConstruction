@@ -69,38 +69,5 @@ namespace RealConstruction.Util
                 }
             }
         }
-
-        public static int FindFreeVehicle(ushort buildingID, ref Building data, TransferManager.TransferReason material, out int cargo, out int capacity)
-        {
-            VehicleManager instance = Singleton<VehicleManager>.instance;
-            ushort num = data.m_ownVehicles;
-            int num2 = 0;
-            while (num != 0)
-            {
-                if ((TransferManager.TransferReason)instance.m_vehicles.m_buffer[(int)num].m_transferType == material)
-                {
-
-                    VehicleInfo info = instance.m_vehicles.m_buffer[(int)num].Info;
-                    
-                    info.m_vehicleAI.GetSize(num, ref instance.m_vehicles.m_buffer[(int)num], out int current, out int vehicle_capacity);
-
-                    cargo = Mathf.Min(current, vehicle_capacity);
-                    capacity = vehicle_capacity;
-
-                    if (MainDataStore.vehicleFree[num])
-                        return num;
-                }
-                num = instance.m_vehicles.m_buffer[(int)num].m_nextOwnVehicle;
-                if (++num2 > 16384)
-                {
-                    CODebugBase<LogChannel>.Error(LogChannel.Core, "Invalid list detected!\n" + Environment.StackTrace);
-                    break;
-                }
-            }
-
-            cargo = 0;
-            capacity = 0;
-            return -1;
-        }
     }
 }

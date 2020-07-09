@@ -38,23 +38,32 @@ namespace RealConstruction.Patch
                 {
                     if (buildingData.m_flags.IsFlagSet(Building.Flags.Created) && (!buildingData.m_flags.IsFlagSet(Building.Flags.Completed)) && (!buildingData.m_flags.IsFlagSet(Building.Flags.Deleted)))
                     {
-                        Locale.Get("ZED", (int)buildingData.Info.m_mesh.bounds.size.z);
                         if (vehicleData.m_transferType == 124 || (TransferManager.TransferReason)(vehicleData.m_transferType) == TransferManager.TransferReason.Goods)
                         {
-                            ushort square = (ushort)(buildingData.Info.m_cellLength * buildingData.Info.m_cellWidth * 10);
-                            square -= MainDataStore.constructionResourceBuffer[vehicleData.m_targetBuilding];
-                            if (vehicleData.m_transferSize > square * 1000)
+                            int resources_need = ConstructionAI.ConstructionResourcesNeed(ref buildingData);
+                            resources_need -= MainDataStore.Current(vehicleData.m_targetBuilding);
+                            if (vehicleData.m_transferSize > resources_need)
                             {
-                                MainDataStore.constructionResourceBuffer[vehicleData.m_targetBuilding] += square;
-                                vehicleData.m_transferSize -= (ushort)(square * 1000);
+                                ushort delta = (ushort)(resources_need * 1000);
+                                MainDataStore.Increment(vehicleData.m_targetBuilding, delta);
+                                vehicleData.m_transferSize -= delta;
                             }
                             else
                             {
-                                MainDataStore.constructionResourceBuffer[vehicleData.m_targetBuilding] += (ushort)(vehicleData.m_transferSize * 100);
+                                MainDataStore.Increment(vehicleData.m_targetBuilding, vehicleData.m_transferSize);
                                 vehicleData.m_transferSize = 0;
                             }
 
-                            MainDataStore.vehicleFree[vehicleID] = true;
+                            if (vehicleData.m_transferSize > 0 && vehicleData.m_transferType == 124)
+                            {
+                                TransferManager.TransferOffer offer2 = default(TransferManager.TransferOffer);
+                                offer2.Priority = 7;
+                                offer2.Vehicle = vehicleID;
+                                offer2.Position = vehicleData.GetLastFramePosition();
+                                offer2.Amount = vehicleData.m_transferSize;
+                                offer2.Active = true;
+                                Singleton<TransferManager>.instance.AddOutgoingOffer((TransferManager.TransferReason)vehicleData.m_transferType, offer2);
+                            }
                         }
                     }
                     else
@@ -64,11 +73,8 @@ namespace RealConstruction.Patch
                             switch ((TransferManager.TransferReason)vehicleData.m_transferType)
                             {
                                 case TransferManager.TransferReason.Goods:
-                                    if (MainDataStore.constructionResourceBuffer[vehicleData.m_targetBuilding] + vehicleData.m_transferSize < 64000)
-                                        MainDataStore.constructionResourceBuffer[vehicleData.m_targetBuilding] += vehicleData.m_transferSize;
-                                    else
-                                        MainDataStore.constructionResourceBuffer[vehicleData.m_targetBuilding] = 64000;
-
+                                case (TransferManager.TransferReason)124:
+                                    MainDataStore.Increment(vehicleData.m_targetBuilding, vehicleData.m_transferSize);
                                     vehicleData.m_transferSize = 0;
                                     break;
                                 case TransferManager.TransferReason.Food:

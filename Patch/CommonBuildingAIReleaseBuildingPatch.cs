@@ -18,7 +18,7 @@ namespace RealConstruction.Patch
             MainDataStore.lumberBuffer[buildingID] = 0;
             MainDataStore.petrolBuffer[buildingID] = 0;
             MainDataStore.coalBuffer[buildingID] = 0;
-            MainDataStore.constructionResourceBuffer[buildingID] = 0;
+            MainDataStore.Release(buildingID);
             MainDataStore.operationResourceBuffer[buildingID] = 0;
             MainDataStore.resourceCategory[buildingID] = 0;
             TransferManager.TransferOffer offer = default(TransferManager.TransferOffer);

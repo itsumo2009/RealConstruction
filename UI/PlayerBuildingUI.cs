@@ -127,7 +127,7 @@ namespace RealConstruction.UI
                         this.coal.text = string.Format(Localization.Get("COAL_STORED") + " [{0}]", MainDataStore.coalBuffer[MainDataStore.lastBuildingID]);
                         this.petrol.text = string.Format(Localization.Get("PETROL_STORED") + " [{0}]", MainDataStore.petrolBuffer[MainDataStore.lastBuildingID]);
                         this.operationResource.text = string.Format(Localization.Get("OPERATION_RESOURCE") + " [{0}]", MainDataStore.operationResourceBuffer[MainDataStore.lastBuildingID]);
-                        this.constructionResource.text = string.Format(Localization.Get("CONSTRUCTION_RESOURCE") + " [{0}]", MainDataStore.constructionResourceBuffer[MainDataStore.lastBuildingID]);
+                        this.constructionResource.text = string.Format(Localization.Get("CONSTRUCTION_RESOURCE") + " [{0}]", MainDataStore.Current(MainDataStore.lastBuildingID, true));
                     }
                     else
                     {
@@ -143,6 +143,8 @@ namespace RealConstruction.UI
                         buildingTypeDD.items = new string[] { Localization.Get("NORMAL_BUILDING"), Localization.Get("GENERATE_BOTH_RESOURCES"), Localization.Get("GENERATE_CONSTRUCTION_RESOURCES"), Localization.Get("GENERATE_OPERATION_RESOURCES"), Localization.Get("NONEED_RESOURCE") };
                     if (buildingTypeDD.selectedIndex != MainDataStore.resourceCategory[MainDataStore.lastBuildingID])
                         buildingTypeDD.selectedIndex = MainDataStore.resourceCategory[MainDataStore.lastBuildingID];
+                    buildingTypeDD.enabled = buildingData.m_flags.IsFlagSet(Building.Flags.Completed);
+                    
                     buildingType.text = Localization.Get("BUILDING_TYPE");
                     refeshOnce = false;
                     this.BringToFront();

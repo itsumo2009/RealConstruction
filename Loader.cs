@@ -16,6 +16,14 @@ using UnityEngine.SocialPlatforms;
 
 namespace RealConstruction
 {
+    public class ConstructionSetBuildingController : BuildingExtensionBase
+    {   
+        public override void OnBuildingCreated(ushort id)
+        {
+            
+        }
+    }
+
     public class Loader : LoadingExtensionBase
     {
         public static LoadMode CurrentLoadMode;
