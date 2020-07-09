@@ -111,9 +111,9 @@ namespace RealConstruction.Patch
 
                 if (!buildingData.m_flags.IsFlagSet(Building.Flags.Completed))
                 {
-                    if (MainDataStore.Current(buildingID) >= ConstructionAI.ConstructionResourcesNeed(ref buildingData))
+                    if (MainDataStore.Current(buildingID) < 0)
                     {
-                        Notification.Problem problem = Notification.RemoveProblems(buildingData.m_problems, Notification.Problem.NoResources);
+                        Notification.Problem problem = Notification.AddProblems(buildingData.m_problems, Notification.Problem.NoResources);
                         buildingData.m_problems = problem;
                     }
                     else

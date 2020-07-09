@@ -7,9 +7,12 @@ using RealConstruction.NewAI;
 using RealConstruction.Util;
 using System;
 using System.Reflection;
+using UnityEngine;
 
 namespace RealConstruction.Patch
 {
+
+
     [HarmonyPatch]
     public static class CargoTruckAIArriveAtTargetPatch
     {
@@ -32,19 +35,18 @@ namespace RealConstruction.Patch
             if (vehicleData.m_targetBuilding != 0)
             {
                 Building buildingData = instance.m_buildings.m_buffer[vehicleData.m_targetBuilding];
-
-                
+                                
                 if (!(buildingData.Info.m_buildingAI is OutsideConnectionAI))
                 {
                     if (buildingData.m_flags.IsFlagSet(Building.Flags.Created) && (!buildingData.m_flags.IsFlagSet(Building.Flags.Completed)) && (!buildingData.m_flags.IsFlagSet(Building.Flags.Deleted)))
                     {
-                        if (vehicleData.m_transferType == 124 || (TransferManager.TransferReason)(vehicleData.m_transferType) == TransferManager.TransferReason.Goods)
+                        if (vehicleData.m_transferType == 124)
                         {
                             int resources_need = ConstructionAI.ConstructionResourcesNeed(ref buildingData);
                             resources_need -= MainDataStore.Current(vehicleData.m_targetBuilding);
                             if (vehicleData.m_transferSize > resources_need)
                             {
-                                ushort delta = (ushort)(resources_need * 1000);
+                                ushort delta = (ushort)(resources_need);
                                 MainDataStore.Increment(vehicleData.m_targetBuilding, delta);
                                 vehicleData.m_transferSize -= delta;
                             }
@@ -52,17 +54,6 @@ namespace RealConstruction.Patch
                             {
                                 MainDataStore.Increment(vehicleData.m_targetBuilding, vehicleData.m_transferSize);
                                 vehicleData.m_transferSize = 0;
-                            }
-
-                            if (vehicleData.m_transferSize > 0 && vehicleData.m_transferType == 124)
-                            {
-                                TransferManager.TransferOffer offer2 = default(TransferManager.TransferOffer);
-                                offer2.Priority = 7;
-                                offer2.Vehicle = vehicleID;
-                                offer2.Position = vehicleData.GetLastFramePosition();
-                                offer2.Amount = vehicleData.m_transferSize;
-                                offer2.Active = true;
-                                Singleton<TransferManager>.instance.AddOutgoingOffer((TransferManager.TransferReason)vehicleData.m_transferType, offer2);
                             }
                         }
                     }
@@ -72,7 +63,6 @@ namespace RealConstruction.Patch
                         {
                             switch ((TransferManager.TransferReason)vehicleData.m_transferType)
                             {
-                                case TransferManager.TransferReason.Goods:
                                 case (TransferManager.TransferReason)124:
                                     MainDataStore.Increment(vehicleData.m_targetBuilding, vehicleData.m_transferSize);
                                     vehicleData.m_transferSize = 0;
