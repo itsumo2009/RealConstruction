@@ -86,10 +86,7 @@ namespace RealConstruction.NewAI
                 byte x = (byte)(Math.Min(current_resources * 255 / total_resources_need, 255));
                 frameData.m_constructState = Math.Min(x, frameData.m_constructState);
 
-                if (MainDataStore.constructionResourcesTotal < total_resources_need)
-                    RequestResources(buildingID, ref buildingData, TransferManager.TransferReason.Goods);
-                else
-                    RequestResources(buildingID, ref buildingData, (TransferManager.TransferReason)124);
+                RequestResources(buildingID, ref buildingData, (TransferManager.TransferReason)124);
             }
 
             MainDataStore.CheckComplete(buildingID, ref buildingData);

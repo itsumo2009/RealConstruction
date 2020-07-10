@@ -49,12 +49,22 @@ namespace RealConstruction.Patch
                                 ushort delta = (ushort)(resources_need);
                                 MainDataStore.Increment(vehicleData.m_targetBuilding, delta);
                                 vehicleData.m_transferSize -= delta;
+                                if (vehicleData.m_transferSize > 0)
+                                {
+                                    TransferManager.TransferOffer offer2 = default(TransferManager.TransferOffer);
+                                    offer2.Priority = 7;
+                                    offer2.Position = buildingData.m_position;
+                                    offer2.Amount = vehicleData.m_transferSize;
+                                    offer2.Active = true;
+                                    Singleton<TransferManager>.instance.AddOutgoingOffer((TransferManager.TransferReason)124, offer2);
+                                }
                             }
                             else
                             {
                                 MainDataStore.Increment(vehicleData.m_targetBuilding, vehicleData.m_transferSize);
                                 vehicleData.m_transferSize = 0;
                             }
+
                         }
                     }
                     else

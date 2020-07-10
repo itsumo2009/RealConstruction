@@ -125,23 +125,6 @@ namespace RealConstruction.NewAI
             //Foods
             if (MainDataStore.resourceCategory[buildingID] == 1 || MainDataStore.resourceCategory[buildingID] == 3)
             {
-                incomingTransferReason = TransferManager.TransferReason.Goods;
-                CaculationVehicle.CustomCalculateGuestVehicles(buildingID, ref buildingData, incomingTransferReason, ref num27, ref num28, ref num29, ref value);
-                buildingData.m_tempImport = (byte)Mathf.Clamp(value, (int)buildingData.m_tempImport, 255);
-                if (MainDataStore.Current(buildingID, true) + num34 + num29 < 32000)
-                {
-                    if (buildingData.m_fireIntensity == 0 && buildingData.m_flags.IsFlagSet(Building.Flags.Completed))
-                    {
-                        TransferManager.TransferOffer offer = default(TransferManager.TransferOffer);
-                        offer.Priority = 7;
-                        offer.Building = buildingID;
-                        offer.Position = buildingData.m_position;
-                        offer.Amount = 1;
-                        offer.Active = false;
-                        Singleton<TransferManager>.instance.AddIncomingOffer(incomingTransferReason, offer);
-                    }
-                }
-
                 incomingTransferReason = TransferManager.TransferReason.Food;
                 if (incomingTransferReason != TransferManager.TransferReason.None)
                 {

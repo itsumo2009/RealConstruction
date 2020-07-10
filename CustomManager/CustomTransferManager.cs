@@ -62,7 +62,10 @@ namespace RealConstruction.CustomManager
             }
             else if (offerOutActive && offerOut.Vehicle != 0)
             {
-                DebugLog.LogToFileOnly("Error: offerOutActive && offerOut.Vehicle");
+                var vehicleID = offerOut.Vehicle;
+                var vehicles = Singleton<VehicleManager>.instance.m_vehicles;
+                var vehicleInfo = vehicles.m_buffer[vehicleID].Info;
+                vehicleInfo.m_vehicleAI.StartTransfer(vehicleID, ref vehicles.m_buffer[vehicleID], material, offerIn);
             }
             else if (offerInActive && offerIn.Citizen != 0u)
             {
@@ -77,7 +80,7 @@ namespace RealConstruction.CustomManager
                 Array16<Building> buildings = Singleton<BuildingManager>.instance.m_buildings;
                 ushort building = offerOut.Building;
                 offerIn.Amount = delta;
-                if (ResourceBuildingAI.IsSpecialBuilding(building))
+                if (ResourceBuildingAI.IsSpecialBuilding(building) || buildings.m_buffer[building].Info.m_buildingAI is OutsideConnectionAI)
                 {
                     StartSpecialBuildingTransfer(building, ref buildings.m_buffer[building], material, offerIn);
                 }

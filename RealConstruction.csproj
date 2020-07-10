@@ -66,6 +66,7 @@
     <Compile Include="NewAI\ConstructionAI.cs" />
     <Compile Include="NewAI\OperationAI.cs" />
     <Compile Include="NewAI\ResourceBuildingAI.cs" />
+    <Compile Include="Patch\OutsideConnectionAISimulationStepPatch.cs" />
     <Compile Include="Patch\DistrictParkGetAcademicYearProgressPatch.cs" />
     <Compile Include="Patch\CarAIPathfindFailurePatch.cs" />
     <Compile Include="Patch\CargoTruckAIArriveAtTargetPatch.cs" />

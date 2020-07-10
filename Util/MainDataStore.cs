@@ -45,7 +45,7 @@ namespace RealConstruction.Util
             if (buildingData.m_flags.IsFlagSet(Building.Flags.Deleted))
                 return;
 
-            if (Current(buildingID) >= reservedResourceBuffer[buildingID])
+            if (Current(buildingID) >= 0)
             {
                 buildingData.m_flags.SetFlags(Building.Flags.Completed);
             }
