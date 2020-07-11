@@ -19,7 +19,6 @@ namespace RealConstruction.Patch
         }
         public static void Postfix(ushort buildingID, ref Building data)
         {
-            
             int num27 = 0;
             int num28 = 0;
             int num29 = 0;
@@ -34,14 +33,14 @@ namespace RealConstruction.Patch
                 CaculationVehicle.CustomCalculateOwnVehicles(buildingID, ref data, outgoingTransferReason, ref num27, ref num28, ref num29, ref value);
             }
 
-            int num36 = 20;
-            if (num27 < num36)
+            int num36 = 10;
+            if (num36 < 100000)
             {
                 TransferManager.TransferOffer offer2 = default(TransferManager.TransferOffer);
-                offer2.Priority = 1;
+                offer2.Priority = 6;
                 offer2.Building = buildingID;
                 offer2.Position = data.m_position;
-                offer2.Amount = 8000 * (num36 - num27);
+                offer2.Amount = 40000;
                 offer2.Active = true;
                 Singleton<TransferManager>.instance.AddOutgoingOffer(outgoingTransferReason, offer2);
             }
