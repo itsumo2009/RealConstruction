@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using RealConstruction.Util;
 using RealConstruction.CustomAI;
 using RealConstruction.NewAI;
+using HarmonyLib;
 
 namespace RealConstruction.UI
 {

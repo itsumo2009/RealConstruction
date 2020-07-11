@@ -80,7 +80,10 @@ namespace RealConstruction.CustomManager
                 Array16<Building> buildings = Singleton<BuildingManager>.instance.m_buildings;
                 ushort building = offerOut.Building;
                 offerIn.Amount = delta;
-                if (ResourceBuildingAI.IsSpecialBuilding(building) || buildings.m_buffer[building].Info.m_buildingAI is OutsideConnectionAI)
+                
+                if (ResourceBuildingAI.IsSpecialBuilding(building)
+                    || buildings.m_buffer[building].Info.m_buildingAI is OutsideConnectionAI
+                    || buildings.m_buffer[building].Info.m_buildingAI is WarehouseAI)
                 {
                     StartSpecialBuildingTransfer(building, ref buildings.m_buffer[building], material, offerIn);
                 }

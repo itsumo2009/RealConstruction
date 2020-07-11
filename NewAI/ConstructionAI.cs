@@ -45,7 +45,6 @@ namespace RealConstruction.NewAI
             int cargo = 0;
             int capacity = 0;
             int outside = 0;
-            CaculationVehicle.CustomCalculateGuestVehicles(buildingID, ref buildingData, TransferManager.TransferReason.Goods, ref count, ref cargo, ref capacity, ref outside);
             CaculationVehicle.CustomCalculateGuestVehicles(buildingID, ref buildingData, (TransferManager.TransferReason)(124), ref count, ref cargo, ref capacity, ref outside);
             return cargo;
         }
@@ -60,10 +59,15 @@ namespace RealConstruction.NewAI
             {
                 TransferManager.TransferOffer offer = default(TransferManager.TransferOffer);
                 offer.Priority = UnityEngine.Random.Range(0, 8);
-                if ((buildingData.Info.m_class.m_service != ItemClass.Service.Residential) && (buildingData.Info.m_class.m_service != ItemClass.Service.Industrial) && (buildingData.Info.m_class.m_service != ItemClass.Service.Commercial) && (buildingData.Info.m_class.m_service != ItemClass.Service.Office))
+                if (
+                    (buildingData.Info.m_class.m_service != ItemClass.Service.Residential) &&
+                    (buildingData.Info.m_class.m_service != ItemClass.Service.Industrial)  &&
+                    (buildingData.Info.m_class.m_service != ItemClass.Service.Commercial)  &&
+                    (buildingData.Info.m_class.m_service != ItemClass.Service.Office))
                 {
                     offer.Priority = 7;
                 }
+
                 offer.Building = buildingID;
                 offer.Position = buildingData.m_position;
                 offer.Amount = -current_resources;

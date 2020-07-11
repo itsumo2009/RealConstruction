@@ -56,6 +56,7 @@ namespace RealConstruction.Patch
                                     offer2.Position = buildingData.m_position;
                                     offer2.Amount = vehicleData.m_transferSize;
                                     offer2.Active = true;
+                                    offer2.Vehicle = vehicleID;
                                     Singleton<TransferManager>.instance.AddOutgoingOffer((TransferManager.TransferReason)124, offer2);
                                 }
                             }
@@ -63,6 +64,9 @@ namespace RealConstruction.Patch
                             {
                                 MainDataStore.Increment(vehicleData.m_targetBuilding, vehicleData.m_transferSize);
                                 vehicleData.m_transferSize = 0;
+                                TransferManager.TransferOffer offer2 = default(TransferManager.TransferOffer);
+                                offer2.Vehicle = vehicleID;
+                                Singleton<TransferManager>.instance.RemoveOutgoingOffer((TransferManager.TransferReason)124, offer2);
                             }
 
                         }
