@@ -89,6 +89,7 @@ namespace RealConstruction.NewAI
 
                 byte x = (byte)(Math.Min(current_resources * 255 / total_resources_need, 255));
                 frameData.m_constructState = Math.Min(x, frameData.m_constructState);
+                
 
                 RequestResources(buildingID, ref buildingData, (TransferManager.TransferReason)124);
             }

@@ -4,6 +4,7 @@ using RealConstruction.CustomAI;
 using RealConstruction.NewAI;
 using RealConstruction.Util;
 using System;
+using System.Net;
 using System.Reflection;
 
 namespace RealConstruction.Patch

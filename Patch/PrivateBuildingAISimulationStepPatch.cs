@@ -14,6 +14,7 @@ namespace RealConstruction.Patch
         {
             return typeof(PrivateBuildingAI).GetMethod("SimulationStep", BindingFlags.Public | BindingFlags.Instance, null, new Type[] { typeof(ushort), typeof(Building).MakeByRefType(), typeof(Building.Frame).MakeByRefType() }, null);
         }
+        
         public static void Postfix(ushort buildingID, ref Building buildingData, ref Building.Frame frameData)
         {
             // Update problems

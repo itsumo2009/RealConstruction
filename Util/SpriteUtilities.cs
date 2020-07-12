@@ -110,6 +110,7 @@ namespace RealConstruction.Util
 
             if (m_atlasStore.ContainsKey(atlasName))
             {
+
                 UITextureAtlas foundAtlas = m_atlasStore[atlasName];
                 Texture2D atlasTexture = foundAtlas.texture;
                 Vector2 atlasSize = new Vector2(atlasTexture.width, atlasTexture.height);

@@ -1,13 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using ColossalFramework;
 using ColossalFramework.UI;
-using UnityEngine;
-using ColossalFramework;
-using System;
-using System.Reflection;
-using System.Text.RegularExpressions;
-using RealConstruction.Util;
 using RealConstruction.CustomAI;
 using RealConstruction.NewAI;
+using RealConstruction.Util;
+using UnityEngine;
 
 namespace RealConstruction.UI
 {
@@ -108,6 +104,11 @@ namespace RealConstruction.UI
             buildingTypeDD.eventSelectedIndexChanged += delegate (UIComponent c, int sel)
             {
                 MainDataStore.resourceCategory[MainDataStore.lastBuildingID] = (byte)sel;
+                if (sel == 3)
+                {
+                    MainDataStore.last_construction_select = MainDataStore.lastBuildingID;
+                    MainDataStore.construction_site_info = Singleton<BuildingManager>.instance.m_buildings.m_buffer[MainDataStore.lastBuildingID].Info;
+                }
             };
         }
 

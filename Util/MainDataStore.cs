@@ -1,9 +1,13 @@
 ﻿using ColossalFramework;
+using ColossalFramework.Globalization;
 using RealConstruction.NewAI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
+using UnityEngine.SocialPlatforms;
+
 namespace RealConstruction.Util
 {
     public class MainDataStore
@@ -24,6 +28,10 @@ namespace RealConstruction.Util
         public static byte[] refreshCanNotConnectedBuildingIDCount = new byte[49152];
         public static byte[] canNotConnectedBuildingIDCount = new byte[49152];
 
+        public static ushort last_construction_select = 0;
+        public static BuildingInfo construction_site_info;
+        public static bool[] construction_sets_placed = new bool[49152];
+
         public static void CheckStart(ushort buildingID, ref Building buildingData)
         {
             if (!buildingData.m_flags.IsFlagSet(Building.Flags.Created))
@@ -35,6 +43,7 @@ namespace RealConstruction.Util
             {
                 buildingData.m_flags.ClearFlags(Building.Flags.Completed);
                 reservedResourceBuffer[buildingID] = ConstructionAI.ConstructionResourcesNeed(ref buildingData);
+                construction_sets_placed[buildingID] = true;
             }
         }
 
@@ -48,6 +57,7 @@ namespace RealConstruction.Util
             if (Current(buildingID) >= 0)
             {
                 buildingData.m_flags.SetFlags(Building.Flags.Completed);
+                construction_sets_placed[buildingID] = false;
             }
         }
         public static void Init(ushort buildingId)
@@ -104,6 +114,12 @@ namespace RealConstruction.Util
         public static void DataInit()
         {
             constructionResourcesTotal = 0;
+
+            for (int i = 0; i < 49152; ++i)
+            {
+                construction_sets_placed[i] = false;
+            }
+
             for (int i = 0; i < MainDataStore.foodBuffer.Length; i++)
             {
                 foodBuffer[i] = 0;
